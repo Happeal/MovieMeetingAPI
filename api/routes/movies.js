@@ -8,5 +8,11 @@ module.exports = (api) => {
         });
     });
 
+    router.post('/', (req, res) => {
+        res.status(200).json({
+            message: "Handling POST requests to /movies" 
+        });
+    });
+
     return router;
 };
