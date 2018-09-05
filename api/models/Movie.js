@@ -4,16 +4,17 @@ var Sequelize = require('sequelize');
 module.exports = (api) => {
 
     return api.mysql.define('movie', {
-        id: {
+        idDB: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
             field: 'idMovie'
         },
-        vote_count: {
+        id: {
             type: Sequelize.DataTypes.INTEGER,
+            field: 'idMovieExternal'
         },
-        moviedb_id: {
+        vote_count: {
             type: Sequelize.DataTypes.INTEGER,
         },
         vote_average: {
@@ -29,6 +30,9 @@ module.exports = (api) => {
             type: Sequelize.DataTypes.STRING
         },
         original_language: {
+            type: Sequelize.DataTypes.STRING
+        },
+        original_title: {
             type: Sequelize.DataTypes.STRING
         },
         adult: {
