@@ -39,7 +39,7 @@ module.exports = (api) => {
 
         if(movies.length < 1){
             //return res.send(412);
-            console.log("412");
+            console.log("400");
             process.exit();
         }
 
@@ -49,8 +49,6 @@ module.exports = (api) => {
         .save()
         .then()
         .catch(function(error) {
-      
-           
                 console.log(error);
                 console.log("500");
                 process.exit();

@@ -14,7 +14,8 @@ module.exports = (api) => {
     });
 
     api.models = {
-        Movie: require('./Movie')(api)
+        Movie: require('./Movie')(api),
+        Genre: require('./Genre')(api)
     };
 
 };

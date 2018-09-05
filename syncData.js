@@ -1,15 +1,17 @@
-const express = require('express');
-const api = express();
+// ici on garde les fonctions créées pour récupérer les données, afin de les réutiliser quand on fera les
+// jobs le faisant automatiquement
 
-const http = require('http');
+var options = {
+    host: "api.themoviedb.org",
+    port: 80,
+    method: 'GET',
+    firstPage: 1,
+    lastPage: 40
+};
 
-require("./api/settings")(api);
-require("./api/models")(api);
-require("./api/actions")(api);
-require("./api/routes")(api);
+options.path = "/3/movie/now_playing?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU&page=";
 
-api.listen(8000);
-
+// sert à récupérer les films de themoviedb dans la base locale
 function syncGenres() {
     var options = {
         host: "api.themoviedb.org",
@@ -37,4 +39,3 @@ function syncGenres() {
         });
     }).end();
 }
-syncGenres();
