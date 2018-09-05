@@ -1,10 +1,10 @@
 {
   "port":3306,
   "db": {
-    "host"     : "",
-    "user"     : "dbo752400695",
-    "password" : "",
-    "database" : "db752400695"
+    "host"     : "127.0.0.1",
+    "user"     : "root",
+    "password" : "h1mAl@ya",
+    "database" : "mydb"
   },
   "security":{
     "salt": "Eno4fna$01",

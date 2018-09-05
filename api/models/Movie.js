@@ -8,15 +8,13 @@ module.exports = (api) => {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
+            field: 'idMovie'
         },
         vote_count: {
             type: Sequelize.DataTypes.INTEGER,
         },
         moviedb_id: {
             type: Sequelize.DataTypes.INTEGER,
-        },
-        video: {
-            type: Sequelize.DataTypes.BOOLEAN
         },
         vote_average: {
             type: Sequelize.DataTypes.DOUBLE
@@ -33,9 +31,6 @@ module.exports = (api) => {
         original_language: {
             type: Sequelize.DataTypes.STRING
         },
-        backdrop_path: {
-            type: Sequelize.DataTypes.STRING
-        },
         adult: {
             type: Sequelize.DataTypes.BOOLEAN
         },
@@ -45,6 +40,9 @@ module.exports = (api) => {
         release_date: {
             type: Sequelize.DataTypes.DATEONLY
         }
-        
+    },
+    { // options
+        freezeTableName: true,
+        timestamps: false
     });
 };
