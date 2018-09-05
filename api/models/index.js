@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 
 module.exports = (api) => {
 
-   /* api.mysql = new Sequelize(api.settings.db.database, api.settings.db.user, api.settings.db.password, {
+    api.mysql = new Sequelize(api.settings.db.database, api.settings.db.user, api.settings.db.password, {
         host: api.settings.db.host,
         dialect: 'mysql',
 
@@ -11,7 +11,7 @@ module.exports = (api) => {
             min: 0,
             idle: 10000
         }
-    });*/
+    });
 
     api.models = {
         Movie: require('./Movie')(api)

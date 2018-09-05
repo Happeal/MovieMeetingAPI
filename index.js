@@ -3,6 +3,7 @@ const api = express();
 
 const http = require('http');
 
+require("./api/settings")(api);
 require("./api/models")(api);
 require("./api/actions")(api);
 require("./api/routes")(api);
@@ -20,7 +21,8 @@ function getJSON(options, cb){
 
         res.on('end', function(){
             var data = JSON.parse(body);
-            console.log(data.results);
+            api.actions.movies.createFromApi(data);
+            //console.log(res);
         });
     }).end();
 }

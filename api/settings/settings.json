@@ -1,0 +1,13 @@
+{
+  "port":3306,
+  "db": {
+    "host"     : "",
+    "user"     : "dbo752400695",
+    "password" : "",
+    "database" : "db752400695"
+  },
+  "security":{
+    "salt": "Eno4fna$01",
+    "tokenExpiration": 24
+  }
+}
