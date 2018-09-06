@@ -3,15 +3,15 @@ const router = require('express').Router();
 module.exports = (api) => {
 
     router.get('/',
-        api.actions.movies.findAll
+        api.actions.genres.findAll
     );
 
     router.get('/:id',
-        api.actions.movies.findById);
+        api.actions.genres.findById);
 
     router.post('/',
         api.middlewares.bodyParser.json(),
-        api.actions.movies.create
+        api.actions.genres.create
     );
 
     return router;

@@ -33,6 +33,27 @@ module.exports = (api) => {
 
     }
 
+    function create(req, res, next) {
+
+        console.log("start create movie");
+        
+        let genres  = req.body;
+        if (genres.length < 1) {
+            return res.send(412);
+        }
+            //sessions['id_user'] =  req.idUser;
+            
+            let genre = Genre.build(genres);
+            genre
+                .save()
+                .then()
+                .catch(function(error) {
+                return res.status(500).send(error)
+            });
+            console.log("oklm");
+        return res.send(201);
+    }
+
     function createFromApi(data){
         if(data.length < 1){
             console.log("400");
@@ -50,6 +71,7 @@ module.exports = (api) => {
     return {
         createFromApi,
         findAll,
-        findById
+        findById,
+        create
     };
 };

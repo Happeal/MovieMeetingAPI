@@ -16,12 +16,12 @@ module.exports = (api) => {
     }
 
     function findById(req, res, next) {
-
+        console.log(req.params.id);
         Movie.findAll({
             where: {
-                idMovie: req.id
+                idMovie: req.params.id
             },
-            order: [['start', 'DESC']]
+            order: [['idMovie', 'DESC']]
         }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
@@ -33,9 +33,10 @@ module.exports = (api) => {
 
     }
 
-
     function create(req, res, next) {
 
+        console.log("start create movie");
+        
         let movies  = req.body;
         if (movies.length < 1) {
             return res.send(412);
