@@ -1,27 +1,27 @@
 module.exports = (api) => {
-    
-    const Genre = api.models.Genre;
+
+    const Meeting = api.models.Meeting;
 
     function findAll(req, res, next) {
 
-        console.log("Start getting all genres");
-        Genre.findAll().then(function(genres) {
-            if(genres[0] == null) {
-                return res.status(204).send(genres)
+        console.log("Start getting all movies");
+        Meeting.findAll().then(function(meetings) {
+            if(meetings[0] == null) {
+                return res.status(204).send(meetings)
             }
-            return res.send(genres);
+            return res.send(meetings);
         }).catch(function(error) {
             return res.status(500).send(error)
         });
     }
 
     function findById(req, res, next) {
-
-        Genre.findAll({
+        console.log(req.params.id);
+        Meeting.findAll({
             where: {
-                idGenre: req.params.id
+                idMeeting: req.params.id
             },
-            order: [['idGenre', 'DESC']]
+            order: [['idMeeting', 'DESC']]
         }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
@@ -37,14 +37,14 @@ module.exports = (api) => {
 
         console.log("start create movie");
         
-        let genres  = req.body;
-        if (genres.length < 1) {
+        let meetings  = req.body;
+        if (meetings.length < 1) {
             return res.send(412);
         }
             //sessions['id_user'] =  req.idUser;
             
-            let genre = Genre.build(genres);
-            genre
+            let meeting = Meeting.build(meetings);
+            meeting
                 .save()
                 .then()
                 .catch(function(error) {
@@ -55,23 +55,35 @@ module.exports = (api) => {
     }
 
     function createFromApi(data){
-        if(data.length < 1){
+        let meetings = data;
+
+        if(meetings.length < 1){
+            //return res.send(412);
             console.log("400");
             process.exit();
         }
 
-        let genre = Genre.build(data);
-        genre.save().then()
+        let meeting = Meeting.build(meetings);
+
+        meeting
+        .save()
+        .then()
         .catch(function(error) {
-            console.log(error);
-            process.exit();
-        })
+                console.log(error);
+                console.log("500");
+                process.exit();
+            
+        });
+
+        console.log("oklm");
+        console.log("201");  
+        
     }
 
     return {
+        create,
         createFromApi,
         findAll,
-        findById,
-        create
+        findById
     };
 };

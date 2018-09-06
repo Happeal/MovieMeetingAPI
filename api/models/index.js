@@ -15,7 +15,8 @@ module.exports = (api) => {
 
     api.models = {
         Movie: require('./Movie')(api),
-        Genre: require('./Genre')(api)
+        Genre: require('./Genre')(api),
+        Meeting: require('./Meeting')(api)
     };
 
 };

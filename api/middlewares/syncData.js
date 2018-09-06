@@ -4,9 +4,11 @@ module.exports = (api) => {
     const all_movies_path = "/3/movie/now_playing?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU";
     const all_genres_path = "/3/genre/movie/list?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU";
 
+    const http = require('http');
+
     var options = {
         host: "api.themoviedb.org",
-        path: all_movies_path,
+        path: "",
         port: 80,
         method: 'GET',
         firstPage: 1,
@@ -14,6 +16,8 @@ module.exports = (api) => {
     };
 
     function syncFilms(){
+        options.path = all_movies_path;
+
         for(var i = options.firstPage; i < options.lastPage; i++){
             var  reqpath = pathToFetch;
             reqpath += i;
@@ -32,25 +36,22 @@ module.exports = (api) => {
                     var data = JSON.parse(body);
         
                     data.results.forEach(function(movie){
-                    // console.log(movie.id);
+
                         if(movie.id){
                             api.actions.movies.createFromApi(movie);
                         }
                     });
-        
-                // api.actions.movies.createFromApi(data);
-            
-                    
-            
-                    //console.log(data.results);
                 });
             }).end();
         }
+
+        return;
     }
 
     // sert à récupérer les films de themoviedb dans la base locale
     function syncGenres() {
 
+        options.path = all_genres_path;
         http.request(options, function(res) {
             var body = '';
             res.on('data', function(chunk){
@@ -67,6 +68,8 @@ module.exports = (api) => {
                 });
             });
         }).end();
+
+        return;
     }
     return {
         syncFilms,
