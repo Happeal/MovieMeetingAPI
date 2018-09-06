@@ -1,15 +1,15 @@
 module.exports = (api) => {
 
-    const Movie = api.models.Movie;
+    const User = api.models.User;
 
     function findAll(req, res, next) {
 
         console.log("Start getting all movies");
-        Movie.findAll().then(function(movies) {
-            if(movies[0] == null) {
-                return res.status(204).send(movies)
+        User.findAll().then(function(users) {
+            if(users[0] == null) {
+                return res.status(204).send(users)
             }
-            return res.send(movies);
+            return res.send(users);
         }).catch(function(error) {
             return res.status(500).send(error)
         });
@@ -17,11 +17,11 @@ module.exports = (api) => {
 
     function findById(req, res, next) {
         console.log(req.params.id);
-        Movie.findAll({
+        User.findAll({
             where: {
-                idMovie: req.params.id
+                idUser: req.params.id
             },
-            order: [['idMovie', 'DESC']]
+            order: [['idUser', 'DESC']]
         }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
@@ -37,14 +37,14 @@ module.exports = (api) => {
 
         console.log("start create movie");
         
-        let movies  = req.body;
-        if (movies.length < 1) {
+        let users  = req.body;
+        if (users.length < 1) {
             return res.send(412);
         }
             //sessions['id_user'] =  req.idUser;
             
-            let movie = Movie.build(movies);
-            movie
+            let user = User.build(users);
+            user
                 .save()
                 .then()
                 .catch(function(error) {
@@ -55,17 +55,17 @@ module.exports = (api) => {
     }
 
     function createFromApi(data){
-        let movies = data;
+        let users = data;
 
-        if(movies.length < 1){
+        if(users.length < 1){
             //return res.send(412);
             console.log("400");
             process.exit();
         }
 
-        let movie = Movie.build(movies);
+        let user = Movie.build(users);
 
-        movie
+        user
         .save()
         .then()
         .catch(function(error) {
@@ -78,25 +78,6 @@ module.exports = (api) => {
         console.log("oklm");
         console.log("201");  
         
-    }
-    function findAllWithRelation(req, res, next) {
-
-        api.mysql.query("SELECT * " +
-            "   FROM movie" +
-            "   WHERE c.idProfile = m.idProfile ",
-           /* "FROM missions m " +
-            "  LEFT JOIN profiles as p ON p.id = m.idProfile " +
-            "WHERE m.state = 'En Attente'" +
-            " OR (m.updatedAt <= CURRENT_TIMESTAMP - INTERVAL 10 MINUTE and m.state = 'Valid')" +
-            "ORDER BY m.severity DESC"*/
-            { model: api.models.MissionCons }).then(function(anotherTask) {
-            if(anotherTask[0] == null){
-                return res.status(204).send(anotherTask)
-            }
-            return res.send(anotherTask);
-        }).catch(function(error) {
-            return res.status(500).send(error)
-        });
     }
 
     return {
