@@ -10,31 +10,43 @@ require("./api/routes")(api);
 
 api.listen(8000);
 
-function syncGenres() {
-    var options = {
-        host: "api.themoviedb.org",
-        path: "/3/genre/movie/list?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU",
-        port: 80,
-        method: 'GET',
-        firstPage: 1,
-        lastPage: 40
-    };
+// remplir la abse de films
+const all_movies_path = "/3/movie/now_playing?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU";
 
-    http.request(options, function(res) {
-        var body = '';
+var options = {
+    host: "api.themoviedb.org",
+    path: all_movies_path,
+    port: 80,
+    method: 'GET',
+    firstPage: 1,
+    lastPage: 40
+};
+
+function getJSON(options, cb){
+    var body = '';
+
+    http.request(options, function(res){
         res.on('data', function(chunk){
             body += chunk;
         });
 
         res.on('end', function(){
             var data = JSON.parse(body);
-            data.genres.forEach(function(genre){
-                //console.log(genre);
-                if(genre.id){
-                    api.actions.genres.createFromApi(genre);
-                }
-            });
+            for (let i = 0; i < 10000; i++) {
+                data.results.forEach(function(movie){
+                    console.log(movie.id);
+                    if(movie.id){
+                        api.actions.movies.createFromApi(movie);
+                    }
+                });
+            }
         });
     }).end();
 }
-syncGenres();
+
+getJSON(options, function(err, result){
+    if(err){
+        return console.log('Error while trying to get data : ', err);
+    }
+    //console.log(result);
+});

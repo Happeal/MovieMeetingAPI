@@ -6,10 +6,12 @@ module.exports = (api) => {
         api.actions.movies.findAll
     );
 
+    router.get('/:id',
+        api.actions.movies.findById);
+
     router.post('/', (req, res) => {
-        res.status(200).json({
-            message: "Handling POST requests to /movies" 
-        });
+        api.middlewares.bodyParser.json(),
+        api.actions.sessions.create
     });
 
     return router;

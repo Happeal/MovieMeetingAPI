@@ -4,8 +4,25 @@ module.exports = (api) => {
 
     function findAll(req, res, next) {
 
-        console.log("Start to fetch data");
-        Movie.findAll().then(function(anotherTask) {
+        console.log("Start getting all movies");
+        Movie.findAll().then(function(movies) {
+            if(movies[0] == null) {
+                return res.status(204).send(movies)
+            }
+            return res.send(movies);
+        }).catch(function(error) {
+            return res.status(500).send(error)
+        });
+    }
+
+    function findById(req, res, next) {
+
+        Movie.findAll({
+            where: {
+                idMovie: req.id
+            },
+            order: [['start', 'DESC']]
+        }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
             }
@@ -13,7 +30,9 @@ module.exports = (api) => {
         }).catch(function(error) {
             return res.status(500).send(error)
         });
+
     }
+
 
     function create(req, res, next) {
 
@@ -63,6 +82,7 @@ module.exports = (api) => {
     return {
         create,
         createFromApi,
-        findAll
+        findAll,
+        findById
     };
 };
