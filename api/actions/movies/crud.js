@@ -16,7 +16,7 @@ module.exports = (api) => {
     }
 
     function findById(req, res, next) {
-        console.log(req.params.id);
+        //console.log(api.middlewares.tokenValidator);
         Movie.findAll({
             where: {
                 idMovie: req.params.id
