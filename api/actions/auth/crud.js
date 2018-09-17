@@ -1,4 +1,3 @@
-
 module.exports = (api) => {
 
     const User = api.models.User;
@@ -20,8 +19,6 @@ module.exports = (api) => {
             if (user.encryptedPassword != pswd) { // TODO crypt password
                 return res.status(401).send("Wrong password");
             }
-            req.session.user = user;
-            //console.log(req.session.user);
             return res.status(200).send("Welcome " + pseudo);
         });
     }
