@@ -1,3 +1,5 @@
+var jwt = require('jsonwebtoken');
+
 module.exports = (api) => {
 
     const User = api.models.User;
@@ -19,7 +21,11 @@ module.exports = (api) => {
             if (user.encryptedPassword != pswd) { // TODO crypt password
                 return res.status(401).send("Wrong password");
             }
-            return res.status(200).send("Welcome " + pseudo);
+            // TODO vérifier qu'il n'y a pas déjà un jwt dans le cache
+            let token = jwt.sign(user.toJSON(), api.settings.security.salt, {
+                expiresIn: api.settings.security.tokenExpiration
+            });
+            return res.status(200).send(token);
         });
     }
 
