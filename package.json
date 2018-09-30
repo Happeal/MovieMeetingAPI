@@ -10,11 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.17.6",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "mysql2": "^1.6.1",
     "npm": "^6.4.1",
     "sequelize": "^4.38.0"
+  },
+  "apidoc": {
+    "name": "movie-meeting-api",
+    "version": "0.0.1",
+    "description": "MovieMeeting's api",
+    "title": "MovieMeetingAPI",
+    "url" : "https://github.com/Happeal/MovieMeetingAPI"
   }
 }
