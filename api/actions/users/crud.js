@@ -34,23 +34,17 @@ module.exports = (api) => {
     }
 
     function create(req, res, next) {
-
-        console.log("start create movie");
-        
         let users  = req.body;
         if (users.length < 1) {
             return res.send(412);
-        }
-            //sessions['id_user'] =  req.idUser;
-            
-            let user = User.build(users);
-            user
-                .save()
-                .then()
-                .catch(function(error) {
+        }   
+        let user = User.build(users);
+        user
+            .save()
+            .then()
+            .catch(function(error) {
                 return res.status(500).send(error)
             });
-            console.log("oklm");
         return res.send(201);
     }
 
