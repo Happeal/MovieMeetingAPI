@@ -11,12 +11,14 @@ module.exports = (api) => {
         },
         pseudo: {
             type: Sequelize.DataTypes.STRING,
+            unique: true
         },
         encryptedPassword: {
             type: Sequelize.DataTypes.STRING
         },
         joinedOn: {
-            type: Sequelize.DataTypes.DATEONLY
+            type: Sequelize.DataTypes.DATEONLY,
+            defaultValue: Sequelize.NOW
         },
         description: {
             type: Sequelize.DataTypes.STRING

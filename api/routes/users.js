@@ -27,13 +27,15 @@ module.exports = (api) => {
         api.actions.users.findById);
 
     /**
-    * @api {post} /movies/ create a new user
+    * @api {post} /users/ create a new user
     * @apiName createUser
     * @apiGroup user
     * 
-    * @apiParam {Integer} TODO.
+    * @apiParam {String} pseudo
+    * @apiParam {String} password
+    * @apiParam {String} [description=""]
     * 
-    * @apiSuccess {Movie} movie The movie with the given id.
+    * @apiSuccess {User} user The created user.
     */
     router.post('/',
         //NEED TO ENCRYPT PASSWORD HERE OR BEFORE IN THE APP

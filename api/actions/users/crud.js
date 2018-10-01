@@ -34,18 +34,26 @@ module.exports = (api) => {
     }
 
     function create(req, res, next) {
-        let users  = req.body;
-        if (users.length < 1) {
-            return res.send(412);
-        }   
-        let user = User.build(users);
+        if (!req.body.pseudo) {
+            return res.status(412).send("You must provide a pseudo");
+        }
+        if (!req.body.password) {
+            return res.status(412).send("You must provide a password");
+        }
+        req.body.encryptedPassword = req.body.password;
+        let user = User.build(req.body);
         user
             .save()
-            .then()
+            .then(function(createdUser) {
+                return res.send(201);
+            })
             .catch(function(error) {
-                return res.status(500).send(error)
+                if (error.name = "SequelizeUniqueConstraintError") {
+                    return res.status(400).send("Pseudo already taken.")
+                } else {
+                    return res.status(500).send(error)
+                }
             });
-        return res.send(201);
     }
 
     function createFromApi(data){
