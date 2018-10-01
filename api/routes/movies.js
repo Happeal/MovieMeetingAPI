@@ -3,13 +3,16 @@ const router = require('express').Router();
 module.exports = (api) => {
 
     /**
-    * @api {get} /movies/ get all movies
+    * @api {get} /movies/?page=:page_num&nb=:nb_per_page get all movies
     * @apiName findAllMovies
     * @apiGroup movie
     *
     * @apiHeader {String} x-api-key User's connection token.
     * 
-    * @apiSuccess {Movie[]} movies All movies from the database.
+    * @apiParam {Integer} [page_num=1] the number of the chosen page
+    * @apiParam {Integer} [nb_per_page=10] number of movies per page
+    * 
+    * @apiSuccess {Movie[]} movies Movies from the database.
     */
     router.get('/',
         api.middlewares.tokenValidator,

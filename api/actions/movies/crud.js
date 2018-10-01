@@ -3,9 +3,23 @@ module.exports = (api) => {
     const Movie = api.models.Movie;
 
     function findAll(req, res, next) {
+        let page_num = 1; // first page by default
+        if (req.query.page != null) {
+            page_num = parseInt(req.query.page);
+        }
+        let nb_movies = 10; // 10 movies per page by default
+        if (req.query.nb != null) {
+            nb_movies = parseInt(req.query.nb);
+        }
 
-        console.log("Start getting all movies");
-        Movie.findAll().then(function(movies) {
+        console.log("Start getting", nb_movies, "movies");
+        let nb_skip = (page_num - 1) * nb_movies;
+
+        Movie.findAll({
+            limit: nb_movies,
+            offset: nb_skip
+        })
+        .then(function(movies) {
             if(movies[0] == null) {
                 return res.status(204).send(movies)
             }

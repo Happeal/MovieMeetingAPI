@@ -9,6 +9,6 @@
   "api-key": "0f07d15f3bf7ad7df9f70d81f66e1861",
   "security":{
     "salt": "Eno4fna$01",
-    "tokenExpiration": 24
+    "tokenExpiration": 1000
   }
 }
