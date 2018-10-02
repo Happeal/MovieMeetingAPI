@@ -62,8 +62,8 @@ module.exports = (api) => {
                 }, {transaction: t});
             });
         }).then(function (result) {
-            return res.status(201).send(result);
-        }).catch(function (err) {
+            return res.status(201); // TODO si possible renvoyer le meeting avec liste d'utilisateurs
+        }).catch(function (err) {   // peut-être en utilisant l'action de findMeetingById
             return res.status(500).send(err)
         });
     }
