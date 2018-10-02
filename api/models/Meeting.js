@@ -13,7 +13,7 @@ module.exports = (api) => {
             type: Sequelize.DataTypes.STRING
         },
         meetingDate: {
-            type: Sequelize.DataTypes.DATEONLY
+            type: Sequelize.DataTypes.DATE
         },
         idMovie: {
             type: Sequelize.DataTypes.INTEGER

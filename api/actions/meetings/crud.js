@@ -34,24 +34,30 @@ module.exports = (api) => {
     }
 
     function create(req, res, next) {
+        console.log("start create a meeting");
 
-        console.log("start create movie");
-        
-        let meetings  = req.body;
-        if (meetings.length < 1) {
-            return res.send(412);
+        // verify all parameters are provided
+        if (req.body.description == null) {
+            return res.status(412).send("You must provide a description.");
         }
-            //sessions['id_user'] =  req.idUser;
-            
-            let meeting = Meeting.build(meetings);
-            meeting
-                .save()
-                .then()
-                .catch(function(error) {
+        if (req.body.meetingDate == null) {
+            return res.status(412).send("You must provide a meetingDate.");
+        }
+
+        // create meeting
+        let meeting = Meeting.build();
+        meeting.description = req.body.description;
+        meeting.meetingDate = req.body.meetingDate; // TODO inexact en bdd (-2h)
+        meeting.idMovie = req.params.filmId;
+        meeting
+            .save()
+            .then(function(createdMeeting) {
+                // put our user in the created meeting
+                return res.status(201).send(createdMeeting);
+            })
+            .catch(function(error) {
                 return res.status(500).send(error)
             });
-            console.log("oklm");
-        return res.send(201);
     }
 
     function createFromApi(data){
