@@ -17,7 +17,11 @@ module.exports = (api) => {
         Movie: require('./Movie')(api),
         Genre: require('./Genre')(api),
         Meeting: require('./Meeting')(api),
-        User: require('./User')(api)
+        User: require('./User')(api),
+        UserMeeting: require('./UserMeeting')(api)
     };
+
+    api.models.User.belongsToMany(api.models.Meeting, { through: api.models.UserMeeting, foreignKey: 'idUser' });
+    api.models.Meeting.belongsToMany(api.models.User, { through: api.models.UserMeeting, foreignKey: 'idMeeting' });
 
 };

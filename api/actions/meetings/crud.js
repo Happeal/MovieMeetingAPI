@@ -1,6 +1,9 @@
+var sequelize = require('sequelize');
+
 module.exports = (api) => {
 
     const Meeting = api.models.Meeting;
+    const UserMeeting = api.models.UserMeeting;
 
     function findAll(req, res, next) {
 
@@ -36,7 +39,7 @@ module.exports = (api) => {
     function create(req, res, next) {
         console.log("start create a meeting");
 
-        // verify all parameters are provided
+        // verify parameters are provided
         if (req.body.description == null) {
             return res.status(412).send("You must provide a description.");
         }
@@ -44,20 +47,25 @@ module.exports = (api) => {
             return res.status(412).send("You must provide a meetingDate.");
         }
 
-        // create meeting
-        let meeting = Meeting.build();
-        meeting.description = req.body.description;
-        meeting.meetingDate = req.body.meetingDate; // TODO inexact en bdd (-2h)
-        meeting.idMovie = req.params.filmId;
-        meeting
-            .save()
-            .then(function(createdMeeting) {
-                // put our user in the created meeting
-                return res.status(201).send(createdMeeting);
-            })
-            .catch(function(error) {
-                return res.status(500).send(error)
+        return api.mysql.transaction(function (t) {
+            // create the meeting
+            return Meeting.create({
+              description: req.body.description,
+              meetingDate: req.body.meetingDate, // TODO inexact en bdd (-2h)
+              idMovie:     req.params.filmId
+            }, {transaction: t})
+            // add the current user to the created meeting
+            .then(function (createdMeeting) {
+                return UserMeeting.create({
+                    idMeeting: createdMeeting.idMeeting,
+                    idUser: req.user.idUser
+                }, {transaction: t});
             });
+        }).then(function (result) {
+            return res.status(201).send(result);
+        }).catch(function (err) {
+            return res.status(500).send(err)
+        });
     }
 
     function createFromApi(data){
