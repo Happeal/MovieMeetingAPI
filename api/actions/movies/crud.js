@@ -2,6 +2,7 @@ module.exports = (api) => {
 
     const Movie = api.models.Movie;
 
+
     function findAll(req, res, next) {
         let page_num = 1; // first page by default
         if (req.query.page != null) {
@@ -34,6 +35,24 @@ module.exports = (api) => {
         Movie.findAll({
             where: {
                 idMovie: req.params.id
+            },
+            order: [['idMovie', 'DESC']]
+        }).then(function(anotherTask) {
+            if(anotherTask[0] == null){
+                return res.status(204).send(anotherTask)
+            }
+            return res.send(anotherTask);
+        }).catch(function(error) {
+            return res.status(500).send(error)
+        });
+
+    }
+
+    function findByName(req, res, next) {
+        //console.log(api.middlewares.tokenValidator);
+        Movie.findAll({
+            where: {
+                title: name
             },
             order: [['idMovie', 'DESC']]
         }).then(function(anotherTask) {
@@ -117,6 +136,7 @@ module.exports = (api) => {
         create,
         createFromApi,
         findAll,
-        findById
+        findById,
+        findByName
     };
 };

@@ -34,6 +34,7 @@ module.exports = (api) => {
     }
 
     function create(req, res, next) {
+        console.log(req.body);
         if (!req.body.pseudo) {
             return res.status(412).send("You must provide a pseudo");
         }

@@ -35,6 +35,21 @@ module.exports = (api) => {
         api.actions.movies.findById);
 
     /**
+    * @api {get} /movies/:name get movie by name
+    * @apiName findMovieByName
+    * @apiGroup movie
+    *
+    * @apiHeader {String} x-api-key User's connection token.
+    * 
+    * @apiParam {String} name  the movie's name.
+    * 
+    * @apiSuccess {Movie} movie The movie with the given name.
+    */
+    router.get('/forName/:name',
+        api.middlewares.tokenValidator,
+        api.actions.movies.findByName);
+
+    /**
     * @api {post} /movies/ create a new movie
     * @apiPrivate
     * @apiName createMovie
