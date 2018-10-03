@@ -5,6 +5,7 @@ module.exports = (api) => {
     const Meeting = api.models.Meeting;
     const UserMeeting = api.models.UserMeeting;
     const Movie = api.models.Movie;
+    const User = api.models.User;
 
     function findAll(req, res, next) {
 
@@ -22,20 +23,23 @@ module.exports = (api) => {
     function findById(req, res, next) {
         console.log(req.params.id);
         Meeting.findById(req.params.id, {
-            include: [Movie]
+            include: [
+                Movie, {
+                    model: User,
+                    through: {
+                        attributes: []
+                    } 
+                }],
+            exclude: [UserMeeting]
         })
-        .then(function(anotherTask) {
-            console.log(anotherTask);
-            if (anotherTask == null){
-                console.log(anotherTask);
+        .then(function(meeting) {
+            if (meeting == null){
                 return res.status(404).send("Meeting not found");
             } else {
-                console.log(anotherTask);
-                return res.status(200).send(anotherTask);
+                return res.status(200).send(meeting);
             }
         }).catch(function(error) {
-            console.log(error.message);
-            return res.status(500).send(error)
+            return res.status(500).send(error.message)
         });
 
     }
@@ -82,7 +86,6 @@ module.exports = (api) => {
         }
 
         let meeting = Meeting.build(meetings);
-
         meeting
         .save()
         .then()
@@ -90,7 +93,6 @@ module.exports = (api) => {
                 console.log(error);
                 console.log("500");
                 process.exit();
-            
         });
 
         console.log("oklm");
