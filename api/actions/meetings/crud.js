@@ -20,16 +20,16 @@ module.exports = (api) => {
 
     function findById(req, res, next) {
         console.log(req.params.id);
-        Meeting.findAll({
-            where: {
-                idMeeting: req.params.id
-            },
-            order: [['idMeeting', 'DESC']]
-        }).then(function(anotherTask) {
-            if(anotherTask[0] == null){
-                return res.status(204).send(anotherTask)
+        Meeting.findById(req.params.id)
+        .then(function(anotherTask) {
+            console.log(anotherTask);
+            if (anotherTask == null){
+                console.log(anotherTask);
+                return res.status(404).send("Meeting not found");
+            } else {
+                console.log(anotherTask);
+                return res.status(200).send(anotherTask);
             }
-            return res.send(anotherTask);
         }).catch(function(error) {
             return res.status(500).send(error)
         });
