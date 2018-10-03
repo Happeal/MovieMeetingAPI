@@ -4,6 +4,7 @@ module.exports = (api) => {
 
     const Meeting = api.models.Meeting;
     const UserMeeting = api.models.UserMeeting;
+    const Movie = api.models.Movie;
 
     function findAll(req, res, next) {
 
@@ -20,7 +21,9 @@ module.exports = (api) => {
 
     function findById(req, res, next) {
         console.log(req.params.id);
-        Meeting.findById(req.params.id)
+        Meeting.findById(req.params.id, {
+            include: [Movie]
+        })
         .then(function(anotherTask) {
             console.log(anotherTask);
             if (anotherTask == null){
@@ -31,6 +34,7 @@ module.exports = (api) => {
                 return res.status(200).send(anotherTask);
             }
         }).catch(function(error) {
+            console.log(error.message);
             return res.status(500).send(error)
         });
 

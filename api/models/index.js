@@ -23,5 +23,6 @@ module.exports = (api) => {
 
     api.models.User.belongsToMany(api.models.Meeting, { through: api.models.UserMeeting, foreignKey: 'idUser' });
     api.models.Meeting.belongsToMany(api.models.User, { through: api.models.UserMeeting, foreignKey: 'idMeeting' });
+    api.models.Meeting.hasOne(api.models.Movie, { foreignKey: 'idMovie' });
 
 };
