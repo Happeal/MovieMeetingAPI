@@ -29,8 +29,7 @@ module.exports = (api) => {
                     through: {
                         attributes: []
                     } 
-                }],
-            exclude: [UserMeeting]
+                }]
         })
         .then(function(meeting) {
             if (meeting == null){
@@ -41,7 +40,6 @@ module.exports = (api) => {
         }).catch(function(error) {
             return res.status(500).send(error.message)
         });
-
     }
 
     function create(req, res, next) {
@@ -56,6 +54,7 @@ module.exports = (api) => {
         }
 
         return api.mysql.transaction(function (t) {
+            createdMeetingId = null;
             // create the meeting
             return Meeting.create({
               description: req.body.description,
@@ -64,14 +63,15 @@ module.exports = (api) => {
             }, {transaction: t})
             // add the current user to the created meeting
             .then(function (createdMeeting) {
+                createdMeetingId = createdMeeting.id;
                 return UserMeeting.create({
                     idMeeting: createdMeeting.idMeeting,
                     idUser: req.user.idUser
                 }, {transaction: t});
-            });
+            })
         }).then(function (result) {
-            return res.status(201); // TODO si possible renvoyer le meeting avec liste d'utilisateurs
-        }).catch(function (err) {   // peut-être en utilisant l'action de findMeetingById
+            return res.status(201).send();
+        }).catch(function (err) {
             return res.status(500).send(err)
         });
     }

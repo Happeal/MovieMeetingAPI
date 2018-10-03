@@ -18,6 +18,7 @@ module.exports = (api) => {
      * @apiSuccess {Meeting} meeting the meeting with the wanted id.
      */
     router.get('/:id',
+        api.middlewares.tokenValidator,
         api.actions.meetings.findById);
 
     /**
