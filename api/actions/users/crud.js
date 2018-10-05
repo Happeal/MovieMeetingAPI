@@ -16,7 +16,7 @@ module.exports = (api) => {
     }
 
     function findById(req, res, next) {
-        console.log(req.params.id);
+        console.log(req.user);
         User.findAll({
             where: {
                 idUser: req.params.id
@@ -30,8 +30,39 @@ module.exports = (api) => {
         }).catch(function(error) {
             return res.status(500).send(error)
         });
-
     }
+
+    function findBuddys(req, res, next) {
+        console.log("start look for buddys");
+
+        return api.mysql.transaction(function (t) {
+            // create the meeting
+            return Meeting.g({
+              description: req.body.description,
+              meetingDate: req.body.meetingDate, // TODO inexact en bdd (-2h)
+              idMovie:     req.params.filmId
+            }, {transaction: t})
+            // add the current user to the created meeting
+            .then(function (createdMeeting) {
+                return UserMeeting.create({
+                    idMeeting: createdMeeting.idMeeting,
+                    idUser: req.user.idUser
+                }, {transaction: t})
+                
+                .then(function(){
+
+                }, {transaction: t});
+            });
+
+
+        }).then(function (result) {
+            return res.status(201); // TODO si possible renvoyer le meeting avec liste d'utilisateurs
+        }).catch(function (err) {   // peut-être en utilisant l'action de findMeetingById
+            return res.status(500).send(err)
+        });
+    }
+
+
 
     function create(req, res, next) {
         console.log(req.body);
@@ -87,6 +118,7 @@ module.exports = (api) => {
         create,
         createFromApi,
         findAll,
+        findBuddys,
         findById
     };
 };

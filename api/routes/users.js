@@ -27,6 +27,17 @@ module.exports = (api) => {
         api.actions.users.findById);
 
     /**
+    * @api {get} /users/buddys get user you already seen
+    * @apiName findBuddys
+    * @apiGroup user
+    * 
+    * @apiSuccess {User} users you already seen
+    */
+   router.get('/buddys',
+        api.middlewares.tokenValidator,
+        api.actions.users.findBuddys);
+
+    /**
     * @api {post} /users/ create a new user
     * @apiName createUser
     * @apiGroup user

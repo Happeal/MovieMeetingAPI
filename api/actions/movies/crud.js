@@ -32,12 +32,17 @@ module.exports = (api) => {
 
     function findById(req, res, next) {
         //console.log(api.middlewares.tokenValidator);
-        Movie.findAll({
-            where: {
-                idMovie: req.params.id
-            },
-            order: [['idMovie', 'DESC']]
-        }).then(function(anotherTask) {
+        var sqlQuery = "SELECT *" +
+        "  FROM mydb.Movie" +
+        "  WHERE idMovie = " + req.params.id;
+
+        sqlQuery += checkFilter(req.query);
+        
+
+        sqlQuery += " ORDER BY idMovie DESC ";
+        
+        api.mysql.query(sqlQuery,
+        { model: api.models.Movie }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
             }
@@ -48,14 +53,21 @@ module.exports = (api) => {
 
     }
 
+
+
     function findByName(req, res, next) {
         //console.log(api.middlewares.tokenValidator);
-        Movie.findAll({
-            where: {
-                title: name
-            },
-            order: [['idMovie', 'DESC']]
-        }).then(function(anotherTask) {
+        var sqlQuery = "SELECT *" +
+        "  FROM mydb.Movie" +
+        "  WHERE title LIKE '" + req.params.name + "%'";
+
+        sqlQuery += checkFilter(req.query);
+      
+
+        sqlQuery += " ORDER BY idMovie DESC ";
+        
+        api.mysql.query(sqlQuery,
+         { model: api.models.Movie }).then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
             }
@@ -64,6 +76,20 @@ module.exports = (api) => {
             return res.status(500).send(error)
         });
 
+    }
+
+    function checkFilter(query){
+       
+        var sqlQuery = "";
+
+        if(query.adult){
+            sqlQuery +=  " AND adult = " + query.adult;
+        }
+        if(query.original_language){
+            sqlQuery += " AND original_language = '" + query.original_language + "'";
+        }
+
+        return sqlQuery;
     }
 
     function create(req, res, next) {

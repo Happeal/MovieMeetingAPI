@@ -15,7 +15,7 @@ module.exports = (api) => {
     * @apiSuccess {Movie[]} movies Movies from the database.
     */
     router.get('/',
-        api.middlewares.tokenValidator,
+     //   api.middlewares.tokenValidator,
         api.actions.movies.findAll
     );
 
@@ -31,7 +31,7 @@ module.exports = (api) => {
     * @apiSuccess {Movie} movie The movie with the given id.
     */
     router.get('/:id',
-        api.middlewares.tokenValidator,
+       // api.middlewares.tokenValidator,
         api.actions.movies.findById);
 
     /**
@@ -46,7 +46,7 @@ module.exports = (api) => {
     * @apiSuccess {Movie} movie The movie with the given name.
     */
     router.get('/forName/:name',
-        api.middlewares.tokenValidator,
+       // api.middlewares.tokenValidator,
         api.actions.movies.findByName);
 
     /**
