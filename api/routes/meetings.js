@@ -6,7 +6,19 @@ module.exports = (api) => {
         api.actions.meetings.findAll
     );
 
+    /**
+     * @api {get} /meetings/:meetingId get a meeting by id
+     * @apiName findMeetingById
+     * @apiGroup meeting
+     * 
+     * @apiHeader {String} x-api-key User's authentication token.
+     * 
+     * @apiParam {Integer} meetingId The id of the meeting.
+     * 
+     * @apiSuccess {Meeting} meeting the meeting with the wanted id.
+     */
     router.get('/:id',
+        api.middlewares.tokenValidator,
         api.actions.meetings.findById);
 
     /**
@@ -19,6 +31,8 @@ module.exports = (api) => {
     * @apiParam {Integer} filmId The movie the people of the group want to see.
     * @apiParam {String} description In the body, describes where to watch the movie and other details.
     * @apiParam {String} meetingDate In the body, in the format YYYY-MM-DD HH:MM
+    * 
+    * @apiSuccess
     */
     router.post('/for/:filmId',
         api.middlewares.tokenValidator,
