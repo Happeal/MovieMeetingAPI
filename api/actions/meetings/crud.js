@@ -4,6 +4,8 @@ module.exports = (api) => {
 
     const Meeting = api.models.Meeting;
     const UserMeeting = api.models.UserMeeting;
+    const Movie = api.models.Movie;
+    const User = api.models.User;
 
     function findAll(req, res, next) {
 
@@ -20,20 +22,24 @@ module.exports = (api) => {
 
     function findById(req, res, next) {
         console.log(req.params.id);
-        Meeting.findAll({
-            where: {
-                idMeeting: req.params.id
-            },
-            order: [['idMeeting', 'DESC']]
-        }).then(function(anotherTask) {
-            if(anotherTask[0] == null){
-                return res.status(204).send(anotherTask)
+        Meeting.findById(req.params.id, {
+            include: [
+                Movie, {
+                    model: User,
+                    through: {
+                        attributes: []
+                    } 
+                }]
+        })
+        .then(function(meeting) {
+            if (meeting == null){
+                return res.status(404).send("Meeting not found");
+            } else {
+                return res.status(200).send(meeting);
             }
-            return res.send(anotherTask);
         }).catch(function(error) {
-            return res.status(500).send(error)
+            return res.status(500).send(error.message)
         });
-
     }
 
     function create(req, res, next) {
@@ -48,6 +54,7 @@ module.exports = (api) => {
         }
 
         return api.mysql.transaction(function (t) {
+            createdMeetingId = null;
             // create the meeting
             return Meeting.create({
               description: req.body.description,
@@ -56,14 +63,15 @@ module.exports = (api) => {
             }, {transaction: t})
             // add the current user to the created meeting
             .then(function (createdMeeting) {
+                createdMeetingId = createdMeeting.id;
                 return UserMeeting.create({
                     idMeeting: createdMeeting.idMeeting,
                     idUser: req.user.idUser
                 }, {transaction: t});
-            });
+            })
         }).then(function (result) {
-            return res.status(201); // TODO si possible renvoyer le meeting avec liste d'utilisateurs
-        }).catch(function (err) {   // peut-être en utilisant l'action de findMeetingById
+            return res.status(201).send();
+        }).catch(function (err) {
             return res.status(500).send(err)
         });
     }
@@ -78,7 +86,6 @@ module.exports = (api) => {
         }
 
         let meeting = Meeting.build(meetings);
-
         meeting
         .save()
         .then()
@@ -86,7 +93,6 @@ module.exports = (api) => {
                 console.log(error);
                 console.log("500");
                 process.exit();
-            
         });
 
         console.log("oklm");
