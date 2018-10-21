@@ -80,8 +80,8 @@ module.exports = (api) => {
         UserMeeting.create({
                 idMeeting: req.params.meetingId,
                 idUser: req.user.idUser
-        }).then((res) => {
-            return res.status(200).send();
+        }).then(() => {
+            return res.status(200).send('You have been added to the meeting.');
         }).catch((err) => {
             if (err.name === 'SequelizeUniqueConstraintError') {
                 return res.status(409).send('You already are in this meeting.');
