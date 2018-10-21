@@ -76,6 +76,10 @@ module.exports = (api) => {
         });
     }
 
+    function join(req, res, next) {
+        return res.status(200).send('Join test');
+    }
+
     function createFromApi(data){
         let meetings = data;
 
@@ -104,6 +108,7 @@ module.exports = (api) => {
         create,
         createFromApi,
         findAll,
-        findById
+        findById,
+        join
     };
 };

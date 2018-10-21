@@ -40,5 +40,19 @@ module.exports = (api) => {
         api.actions.meetings.create
     );
 
+    /**
+     * @api {put} /meetings/join/:meetingId
+     * @apiName joinMeeting
+     * @apiGroup meeting
+     * 
+     * @apiHeader {String} x-api-key User's authentication token.
+     * 
+     * @apiParam {integer} meetingId The meeting the user wants to join.
+     */
+    router.put('/join/:meetingId',
+        api.middlewares.tokenValidator,
+        api.actions.meetings.join
+    );
+
     return router;
 };
