@@ -34,14 +34,17 @@ module.exports = (api) => {
 
     function findBuddys(req, res, next) {
         console.log("start look for buddys");
-       //console.log(api.middlewares.tokenValidator);
+
+        console.log(req.user.idUser);
        var sqlQuery = "SELECT DISTINCT mydb.User.* FROM mydb.User WHERE mydb.User.idUser IN (\
         SELECT DISTINCT mydb.UserMeeting.idUser FROM mydb.UserMeeting WHERE mydb.UserMeeting.idMeeting IN (\
-        SELECT DISTINCT mydb.UserMeeting.idMeeting FROM mydb.UserMeeting WHERE mydb.UserMeeting.idUser = 1 ) )";
+        SELECT DISTINCT mydb.UserMeeting.idMeeting FROM mydb.UserMeeting WHERE mydb.UserMeeting.idUser = "  
+         + req.user.idUser + " ) )";
        
        sqlQuery += " ORDER BY mydb.User.idUser DESC ";
-       
+
        console.log(sqlQuery);
+
        api.mysql.query(sqlQuery,
        { model: api.models.Movie }).then(function(anotherTask) {
            if(anotherTask[0] == null){

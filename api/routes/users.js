@@ -34,7 +34,7 @@ module.exports = (api) => {
     * @apiSuccess {User} users you already seen
     */
    router.get('/buddys',
-       // api.middlewares.tokenValidator,
+       api.middlewares.tokenValidator,
         api.actions.users.findBuddys);
 
     /**
