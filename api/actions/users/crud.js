@@ -34,32 +34,23 @@ module.exports = (api) => {
 
     function findBuddys(req, res, next) {
         console.log("start look for buddys");
-
-        return api.mysql.transaction(function (t) {
-            // create the meeting
-            return Meeting.g({
-              description: req.body.description,
-              meetingDate: req.body.meetingDate, // TODO inexact en bdd (-2h)
-              idMovie:     req.params.filmId
-            }, {transaction: t})
-            // add the current user to the created meeting
-            .then(function (createdMeeting) {
-                return UserMeeting.create({
-                    idMeeting: createdMeeting.idMeeting,
-                    idUser: req.user.idUser
-                }, {transaction: t})
-                
-                .then(function(){
-
-                }, {transaction: t});
-            });
-
-
-        }).then(function (result) {
-            return res.status(201); // TODO si possible renvoyer le meeting avec liste d'utilisateurs
-        }).catch(function (err) {   // peut-être en utilisant l'action de findMeetingById
-            return res.status(500).send(err)
-        });
+       //console.log(api.middlewares.tokenValidator);
+       var sqlQuery = "SELECT DISTINCT mydb.User.* FROM mydb.User WHERE mydb.User.idUser IN (\
+        SELECT DISTINCT mydb.UserMeeting.idUser FROM mydb.UserMeeting WHERE mydb.UserMeeting.idMeeting IN (\
+        SELECT DISTINCT mydb.UserMeeting.idMeeting FROM mydb.UserMeeting WHERE mydb.UserMeeting.idUser = 1 ) )";
+       
+       sqlQuery += " ORDER BY mydb.User.idUser DESC ";
+       
+       console.log(sqlQuery);
+       api.mysql.query(sqlQuery,
+       { model: api.models.Movie }).then(function(anotherTask) {
+           if(anotherTask[0] == null){
+               return res.status(204).send(anotherTask)
+           }
+           return res.send(anotherTask);
+       }).catch(function(error) {
+           return res.status(500).send(error)
+       });
     }
 
 
@@ -69,10 +60,10 @@ module.exports = (api) => {
         if (!req.body.pseudo) {
             return res.status(412).send("You must provide a pseudo");
         }
-        if (!req.body.password) {
+        if (!req.body.encryptedPassword) {
             return res.status(412).send("You must provide a password");
         }
-        req.body.encryptedPassword = req.body.password;
+        
         let user = User.build(req.body);
         user
             .save()

@@ -23,7 +23,7 @@ module.exports = (api) => {
     * 
     * @apiSuccess {User} user The user with the given id.
     */
-    router.get('/:id',
+    router.get('/get/:id',
         api.actions.users.findById);
 
     /**
@@ -34,7 +34,7 @@ module.exports = (api) => {
     * @apiSuccess {User} users you already seen
     */
    router.get('/buddys',
-        api.middlewares.tokenValidator,
+       // api.middlewares.tokenValidator,
         api.actions.users.findBuddys);
 
     /**
