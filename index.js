@@ -10,7 +10,7 @@ require("./api/routes")(api);
 
 
 //api.middlewares.syncData.syncGenres();
-
+//api.middlewares.syncData.syncFilms();
 
 api.listen(8000);
 

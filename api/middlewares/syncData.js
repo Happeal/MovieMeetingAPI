@@ -1,7 +1,7 @@
 // ici on garde les fonctions créées pour récupérer les données, afin de les réutiliser quand on fera les
 // jobs le faisant automatiquement
 module.exports = (api) => {
-    const all_movies_path = "/3/movie/now_playing?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU";
+    const all_movies_path = "/3/discover/movie?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
     const all_genres_path = "/3/genre/movie/list?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU";
 
     const http = require('http');
@@ -17,6 +17,7 @@ module.exports = (api) => {
 
     function syncFilms(){
         options.path = all_movies_path;
+        var pathToFetch  = all_movies_path;
 
         for(var i = options.firstPage; i < options.lastPage; i++){
             var  reqpath = pathToFetch;
