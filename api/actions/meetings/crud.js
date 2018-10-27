@@ -92,6 +92,19 @@ module.exports = (api) => {
         });
     }
 
+    function forMovie(req, res, next) {
+        Meeting.findAll({
+            where: {
+                idMovie: req.params.filmId
+            }
+        }).then(function(meetings) {
+            return res.status(200).send(meetings);
+        }).catch(function(error) {
+            console.log(err);
+            return res.status(500).send('Sorry there was a technical incident.');
+        });
+    }
+
     function createFromApi(data){
         let meetings = data;
 
@@ -121,6 +134,7 @@ module.exports = (api) => {
         createFromApi,
         findAll,
         findById,
-        join
+        join,
+        forMovie
     };
 };

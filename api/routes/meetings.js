@@ -54,5 +54,19 @@ module.exports = (api) => {
         api.actions.meetings.join
     );
 
+    /**
+     * @api {get} /meetings/for/:filmId
+     * @apiName meetingsForMovie
+     * @apiGroup meeting
+     * 
+     * @apiHeader {String} x-api-key User's authentication token.
+     * 
+     * @apiParam {integer} filmId The movie you want to see the meetings for.
+     */
+    router.get('/for/:filmId',
+        api.middlewares.tokenValidator,
+        api.actions.meetings.forMovie
+    );
+
     return router;
 };
