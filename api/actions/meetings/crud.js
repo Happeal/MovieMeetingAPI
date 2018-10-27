@@ -76,6 +76,22 @@ module.exports = (api) => {
         });
     }
 
+    function join(req, res, next) {
+        UserMeeting.create({
+                idMeeting: req.params.meetingId,
+                idUser: req.user.idUser
+        }).then(() => {
+            return res.status(200).send('You have been added to the meeting.');
+        }).catch((err) => {
+            if (err.name === 'SequelizeUniqueConstraintError') {
+                return res.status(409).send('You already are in this meeting.');
+            } else {
+                console.log(err);
+                return res.status(500).send('Sorry there was a technical incident.');
+            }
+        });
+    }
+
     function createFromApi(data){
         let meetings = data;
 
@@ -104,6 +120,7 @@ module.exports = (api) => {
         create,
         createFromApi,
         findAll,
-        findById
+        findById,
+        join
     };
 };
