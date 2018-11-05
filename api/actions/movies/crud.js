@@ -1,7 +1,7 @@
 module.exports = (api) => {
 
     const Movie = api.models.Movie;
-
+    const Op = require('sequelize').Op
 
     function findAll(req, res, next) {
         let page_num = 1; // first page by default
@@ -21,6 +21,37 @@ module.exports = (api) => {
             offset: nb_skip
         })
         .then(function(movies) {
+            if(movies[0] == null) {
+                return res.status(204).send(movies)
+            }
+            return res.send(movies);
+        }).catch(function(error) {
+            return res.status(500).send(error)
+        });
+    }
+
+    function findFuture(req, res, next) {
+        let page_num = 1; // first page by default
+        if (req.query.page != null) {
+            page_num = parseInt(req.query.page);
+        }
+        let nb_movies = 10; // 10 movies per page by default
+        if (req.query.nb != null) {
+            nb_movies = parseInt(req.query.nb);
+        }
+
+        let nb_skip = (page_num - 1) * nb_movies;
+
+        Movie.findAll({
+            where: {
+                release_date: {
+                    [Op.gt]: new Date()
+                }
+            },
+            order: ['release_date'],
+            limit: nb_movies,
+            offset: nb_skip
+        }).then(function(movies) {
             if(movies[0] == null) {
                 return res.status(204).send(movies)
             }
@@ -163,6 +194,7 @@ module.exports = (api) => {
         createFromApi,
         findAll,
         findById,
-        findByName
+        findByName,
+        findFuture
     };
 };

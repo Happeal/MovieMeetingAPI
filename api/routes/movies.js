@@ -15,8 +15,25 @@ module.exports = (api) => {
     * @apiSuccess {Movie[]} movies Movies from the database.
     */
     router.get('/',
-     //   api.middlewares.tokenValidator,
+        api.middlewares.tokenValidator,
         api.actions.movies.findAll
+    );
+
+    /**
+    *  @api {get} /movies/future?page=:page_num&nb=:nb_per_page get currently playing movies
+    * @apiName findFutureMovies
+    * @apiGroup movie
+    *
+    * @apiHeader {String} x-api-key User's connection token.
+    * 
+    * @apiParam {Integer} [page_num=1] the number of the chosen page
+    * @apiParam {Integer} [nb_per_page=10] number of movies per page
+    * 
+    * @apiSuccess {Movie[]} movies Movies from the database.
+    */
+    router.get('/future',
+        api.middlewares.tokenValidator,
+        api.actions.movies.findFuture
     );
 
     /**
@@ -31,7 +48,7 @@ module.exports = (api) => {
     * @apiSuccess {Movie} movie The movie with the given id.
     */
     router.get('/:id',
-       // api.middlewares.tokenValidator,
+        api.middlewares.tokenValidator,
         api.actions.movies.findById);
 
     /**
@@ -46,7 +63,7 @@ module.exports = (api) => {
     * @apiSuccess {Movie} movie The movie with the given name.
     */
     router.get('/forName/:name',
-       // api.middlewares.tokenValidator,
+        api.middlewares.tokenValidator,
         api.actions.movies.findByName);
 
     /**
