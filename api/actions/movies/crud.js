@@ -3,23 +3,8 @@ module.exports = (api) => {
     const Movie = api.models.Movie;
     const Op = require('sequelize').Op
 
-    function findAll(req, res, next) {
-        let page_num = 1; // first page by default
-        if (req.query.page != null) {
-            page_num = parseInt(req.query.page);
-        }
-        let nb_movies = 10; // 10 movies per page by default
-        if (req.query.nb != null) {
-            nb_movies = parseInt(req.query.nb);
-        }
-
-        console.log("Start getting", nb_movies, "movies");
-        let nb_skip = (page_num - 1) * nb_movies;
-
-        Movie.findAll({
-            limit: nb_movies,
-            offset: nb_skip
-        })
+    function findMoviesWithQuery(query, res) {
+        Movie.findAll(query)
         .then(function(movies) {
             if(movies[0] == null) {
                 return res.status(204).send(movies)
@@ -30,7 +15,8 @@ module.exports = (api) => {
         });
     }
 
-    function findFuture(req, res, next) {
+    // returns the pagination as [nb_movies, nb_skip]
+    function givePagination(req) {
         let page_num = 1; // first page by default
         if (req.query.page != null) {
             page_num = parseInt(req.query.page);
@@ -39,26 +25,32 @@ module.exports = (api) => {
         if (req.query.nb != null) {
             nb_movies = parseInt(req.query.nb);
         }
-
         let nb_skip = (page_num - 1) * nb_movies;
+        return [nb_movies, nb_skip];
+    }
 
-        Movie.findAll({
+    function findAll(req, res, next) {
+        let pagination = givePagination(req);
+        let query = {
+            limit: pagination[0],
+            offset: pagination[1]
+        };
+        findMoviesWithQuery(query, res);
+    }
+
+    function findFuture(req, res, next) {
+        let pagination = givePagination(req);
+        let query = {
             where: {
                 release_date: {
                     [Op.gt]: new Date()
                 }
             },
             order: ['release_date'],
-            limit: nb_movies,
-            offset: nb_skip
-        }).then(function(movies) {
-            if(movies[0] == null) {
-                return res.status(204).send(movies)
-            }
-            return res.send(movies);
-        }).catch(function(error) {
-            return res.status(500).send(error)
-        });
+            limit: pagination[0],
+            offset: pagination[1]
+        };
+        findMoviesWithQuery(query, res);
     }
 
     function findById(req, res, next) {

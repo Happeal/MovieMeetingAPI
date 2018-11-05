@@ -36,6 +36,7 @@ module.exports = (api) => {
         api.actions.movies.findFuture
     );
 
+
     /**
     * @api {get} /movies/:id get movie by id
     * @apiName findMovieById
