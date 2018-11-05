@@ -53,6 +53,24 @@ module.exports = (api) => {
         findMoviesWithQuery(query, res);
     }
 
+    function findPlaying(req, res, next) {
+        let pagination = givePagination(req);
+        let today = new Date();
+        let monthsAgo = new Date().setDate(today.getDate()-60); // approx. 2 months
+        let query = {
+            where: {
+                release_date: {
+                    [Op.lte]: today,
+                    [Op.gte]: monthsAgo
+                }
+            },
+            order: ['vote_average'],
+            limit: pagination[0],
+            offset: pagination[1]
+        };
+        findMoviesWithQuery(query, res);
+    }
+
     function findById(req, res, next) {
         //console.log(api.middlewares.tokenValidator);
         var sqlQuery = "SELECT *" +
@@ -187,6 +205,7 @@ module.exports = (api) => {
         findAll,
         findById,
         findByName,
-        findFuture
+        findFuture,
+        findPlaying
     };
 };

@@ -20,7 +20,24 @@ module.exports = (api) => {
     );
 
     /**
-    *  @api {get} /movies/future?page=:page_num&nb=:nb_per_page get currently playing movies
+    *  @api {get} /movies/playing?page=:page_num&nb=:nb_per_page get currently playing movies
+    * @apiName findPlayigMovies
+    * @apiGroup movie
+    *
+    * @apiHeader {String} x-api-key User's connection token.
+    * 
+    * @apiParam {Integer} [page_num=1] the number of the chosen page
+    * @apiParam {Integer} [nb_per_page=10] number of movies per page
+    * 
+    * @apiSuccess {Movie[]} movies Movies from the database.
+    */
+    router.get('/playing',
+        api.middlewares.tokenValidator,
+        api.actions.movies.findPlaying
+    );
+
+    /**
+    *  @api {get} /movies/upcoming?page=:page_num&nb=:nb_per_page get currently playing movies
     * @apiName findFutureMovies
     * @apiGroup movie
     *
@@ -31,11 +48,10 @@ module.exports = (api) => {
     * 
     * @apiSuccess {Movie[]} movies Movies from the database.
     */
-    router.get('/future',
+    router.get('/upcoming',
         api.middlewares.tokenValidator,
         api.actions.movies.findFuture
     );
-
 
     /**
     * @api {get} /movies/:id get movie by id
