@@ -4,6 +4,14 @@ module.exports = (api) => {
 
     const User = api.models.User;
 
+    function formatUser(user, token) {
+        return {
+            'id': user.idUser,
+            'pseudo': user.pseudo,
+            'token': token
+        }
+    }
+
     function connect(req, res, next) {
         let pseudo = req.body.pseudo;
         let pswd = req.body.password;
@@ -25,7 +33,12 @@ module.exports = (api) => {
             let token = jwt.sign(user.toJSON(), api.settings.security.salt, {
                 expiresIn: api.settings.security.tokenExpiration
             });
-            return res.status(200).send(token);
+
+            
+            let answer = formatUser(user, token);
+                    console.log(answer);
+                    return res.status(200).send(answer);
+            
         });
     }
 
