@@ -71,8 +71,33 @@ module.exports = (api) => {
         findMoviesWithQuery(query, res);
     }
 
+    function findMoviesWithRecentMeetings(req, res, next) {
+        let pagination = givePagination(req);
+
+        var sqlQuery = 
+              "select * "
+            + " from mydb.Movie"
+            + " inner join ("
+                + " select idMovie, max(creationDate) as lastMeetingCreationDate from mydb.Meeting"
+                + " where meetingDate > now()"
+                + " group by idMovie"
+            + " ) recentMeetings"
+            + " on recentMeetings.idMovie = mydb.Movie.idMovie"
+            + " order by recentMeetings.lastMeetingCreationDate desc"
+            + " limit " + pagination[1] + ", " + pagination[0];
+
+        api.mysql.query(sqlQuery, { model: api.models.Movie })
+        .then(function(anotherTask) {
+            if(anotherTask[0] == null){
+                return res.status(204).send(anotherTask)
+            }
+            return res.send(anotherTask);
+        }).catch(function(err) {
+            return res.status(500).send(err)
+        });
+    }
+
     function findById(req, res, next) {
-        //console.log(api.middlewares.tokenValidator);
         var sqlQuery = "SELECT *" +
         "  FROM mydb.Movie" +
         "  WHERE idMovie = " + req.params.id;
@@ -82,8 +107,8 @@ module.exports = (api) => {
 
         sqlQuery += " ORDER BY idMovie DESC ";
         
-        api.mysql.query(sqlQuery,
-        { model: api.models.Movie }).then(function(anotherTask) {
+        api.mysql.query(sqlQuery, { model: api.models.Movie })
+        .then(function(anotherTask) {
             if(anotherTask[0] == null){
                 return res.status(204).send(anotherTask)
             }
@@ -206,6 +231,7 @@ module.exports = (api) => {
         findById,
         findByName,
         findFuture,
-        findPlaying
+        findPlaying,
+        findMoviesWithRecentMeetings
     };
 };

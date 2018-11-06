@@ -21,7 +21,7 @@ module.exports = (api) => {
 
     /**
     *  @api {get} /movies/playing?page=:page_num&nb=:nb_per_page get currently playing movies
-    * @apiName findPlayigMovies
+    * @apiName findPlayingMovies
     * @apiGroup movie
     *
     * @apiHeader {String} x-api-key User's connection token.
@@ -34,6 +34,23 @@ module.exports = (api) => {
     router.get('/playing',
         api.middlewares.tokenValidator,
         api.actions.movies.findPlaying
+    );
+
+    /**
+    *  @api {get} /movies/with-latest-meetings?page=:page_num&nb=:nb_per_page get currently playing movies
+    * @apiName findMoviesWithRecentMeetings
+    * @apiGroup movie
+    *
+    * @apiHeader {String} x-api-key User's connection token.
+    * 
+    * @apiParam {Integer} [page_num=1] the number of the chosen page
+    * @apiParam {Integer} [nb_per_page=10] number of movies per page
+    * 
+    * @apiSuccess {Movie[]} movies Movies from the database.
+    */
+    router.get('/with-latest-meetings',
+        api.middlewares.tokenValidator,
+        api.actions.movies.findMoviesWithRecentMeetings
     );
 
     /**
