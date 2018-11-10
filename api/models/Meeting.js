@@ -17,9 +17,6 @@ module.exports = (api) => {
         },
         idMovie: {
             type: Sequelize.DataTypes.INTEGER
-        },
-        creationDate: {
-            type: Sequelize.DataTypes.DATE
         }
     }, {
         // options
