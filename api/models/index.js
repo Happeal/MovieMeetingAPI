@@ -2,6 +2,8 @@ var Sequelize = require('sequelize');
 
 module.exports = (api) => {
 
+
+    console.log(api.settings.db.host);
     api.mysql = new Sequelize(api.settings.db.database, api.settings.db.user, api.settings.db.password, {
         host: api.settings.db.host,
         dialect: 'mysql',
