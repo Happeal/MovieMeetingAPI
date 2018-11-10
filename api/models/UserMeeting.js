@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 
 module.exports = (api) => {
 
-    return api.mysql.define('usermeeting', {
+    return api.mysql.define('UserMeeting', {
     }, {
         // options
         freezeTableName: true,

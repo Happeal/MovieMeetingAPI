@@ -63,7 +63,7 @@ module.exports = (api) => {
         if (!req.body.pseudo) {
             return res.status(412).send("You must provide a pseudo");
         }
-        if (!req.body.encryptedPassword) {
+        if (!req.body.password) {
             return res.status(412).send("You must provide a password");
         }
         
@@ -75,7 +75,7 @@ module.exports = (api) => {
             })
             .catch(function(error) {
                 if (error.name = "SequelizeUniqueConstraintError") {
-                    return res.status(400).send("Pseudo already taken.")
+                    return res.status(400).send(error)
                 } else {
                     return res.status(500).send(error)
                 }
