@@ -44,7 +44,7 @@ module.exports = (api) => {
 
     function create(req, res, next) {
         console.log("start create a meeting");
-
+    
         // verify parameters are provided
         if (req.body.description == null) {
             return res.status(412).send("You must provide a description.");
@@ -96,7 +96,14 @@ module.exports = (api) => {
         Meeting.findAll({
             where: {
                 idMovie: req.params.filmId
-            }
+            },
+            include: [
+                {
+                    model: User,
+                    through: {
+                        attributes: []
+                    } 
+                }]
         }).then(function(meetings) {
             return res.status(200).send(meetings);
         }).catch(function(error) {

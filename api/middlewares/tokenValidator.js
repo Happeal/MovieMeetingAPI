@@ -3,6 +3,7 @@ var jwt = require('jsonwebtoken');
 module.exports = (api) => {
 
     function validator(req,res,next) {
+   
         console.log("debug 0");
         var token = req.headers['x-api-key'];
         if (token) {
