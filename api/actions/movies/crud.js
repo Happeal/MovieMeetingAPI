@@ -179,7 +179,7 @@ module.exports = (api) => {
         return res.send(201);
     }
 
-    function createFromApi(data){
+    function createFromApi(data) {
         let movies = data;
         if(movies.length < 1){
             console.log("400");
@@ -193,6 +193,20 @@ module.exports = (api) => {
         .catch(function(error) {
                 console.log(error.name);
                 //process.exit();
+        });
+    }
+
+    function createManyFromApi(data){
+        let movies = data;
+        if(movies.length < 1){
+            console.log("400");
+            process.exit();
+        }
+        //console.log(data);
+        Movie.bulkCreate(data)
+        .then()
+        .catch(function(error) {
+            console.log(error.name);
         });
     }
 
@@ -219,6 +233,7 @@ module.exports = (api) => {
     return {
         create,
         createFromApi,
+        createManyFromApi,
         findAll,
         findById,
         findByName,

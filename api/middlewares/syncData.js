@@ -3,7 +3,8 @@
 module.exports = (api) => {
     const all_movies_path = "/3/discover/movie?api_key=" + api.settings.apikey + "&language=fr-EU&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
     const all_genres_path = "/3/genre/movie/list?api_key=" + api.settings.apikey + "&language=fr-EU";
-    const latestMoviePath = `/3/movie/latest?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU`;
+    const latestMoviePath = '/3/movie/latest?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU';
+    const currentMoviesPath = '/3/movie/now_playing?api_key=0f07d15f3bf7ad7df9f70d81f66e1861&language=fr-EU';
 
     const http = require('http');
 
@@ -32,6 +33,21 @@ module.exports = (api) => {
         }).end();
     }
 
+    function syncCurrentMovies(){
+        options.path = currentMoviesPath;
+        http.request(options, function(res){
+            var body = '';
+
+            res.on('data', function(chunk){
+                body += chunk;
+            });
+            res.on('end', function(){
+                var data = JSON.parse(body);
+                api.actions.movies.createManyFromApi(data.results);
+                //console.log(data);
+            });
+        }).end();
+    }
 
     // sert à récupérer les films de themoviedb dans la base locale
     function syncGenres() {
@@ -58,6 +74,7 @@ module.exports = (api) => {
     }
     return {
         syncLastestMovie,
+        syncCurrentMovies,
         syncGenres
     };
 };

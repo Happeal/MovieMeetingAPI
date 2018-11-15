@@ -14,3 +14,7 @@ api.listen(8000);
 cron.schedule('*/10 * * * * *', () => {
     api.middlewares.syncData.syncLastestMovie();
 });
+
+cron.schedule('10 * * * * *', () => {
+    api.middlewares.syncData.syncCurrentMovies();
+});
