@@ -125,7 +125,7 @@ module.exports = (api) => {
         //console.log(api.middlewares.tokenValidator);
         var sqlQuery = "SELECT *" +
         "  FROM mydb.Movie" +
-        "  WHERE title LIKE '" + req.params.name + "%'";
+        "  WHERE title LIKE '%" + req.params.name + "%'";
 
         sqlQuery += checkFilter(req.query);
       
