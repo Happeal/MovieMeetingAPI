@@ -58,8 +58,7 @@ module.exports = (api) => {
 
 
 
-    function create(req, res, next) {
-        console.log(req.body);
+    function create(req, res) {
         if (!req.body.pseudo) {
             return res.status(412).send("You must provide a pseudo");
         }
@@ -67,10 +66,11 @@ module.exports = (api) => {
             return res.status(412).send("You must provide a password");
         }
         
+        req.body.encryptedPassword = req.body.password;
         let user = User.build(req.body);
         user
             .save()
-            .then(function(createdUser) {
+            .then(function() {
                 return res.send(201);
             })
             .catch(function(error) {

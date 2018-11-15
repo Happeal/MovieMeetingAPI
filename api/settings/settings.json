@@ -1,10 +1,10 @@
 {
-  "port":3306,
   "db": {
-    "host"     : "127.0.0.1",
-    "user"     : "root",
-    "password" : "Happealjedi55",
-    "database" : "mydb"
+    "host"     : "mydb.cw39l0fuv7yt.eu-west-3.rds.amazonaws.com",
+    "user"     : "...",
+    "password" : "...",
+    "database" : "mydb",
+    "port": 3306
   },
   "api-key": "0f07d15f3bf7ad7df9f70d81f66e1861",
   "security":{
