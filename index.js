@@ -15,6 +15,10 @@ cron.schedule('*/10 * * * * *', () => {
     api.middlewares.syncData.syncLastestMovie();
 });
 
-cron.schedule('10 * * * * *', () => {
+cron.schedule('*/10 * * * * *', () => {
     api.middlewares.syncData.syncCurrentMovies();
+});
+
+cron.schedule('*/10 * * * * *', () => {
+    api.middlewares.syncData.syncUpcomingMovies();
 });
