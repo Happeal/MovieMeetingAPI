@@ -110,7 +110,7 @@ module.exports = (api) => {
         api.mysql.query(sqlQuery, { model: api.models.Movie })
         .then(function(anotherTask) {
             if(anotherTask[0] == null){
-                return res.status(204).send(anotherTask)
+                return res.status(404).send()
             }
             return res.send(anotherTask);
         }).catch(function(error) {
