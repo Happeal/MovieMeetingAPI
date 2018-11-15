@@ -24,7 +24,7 @@ module.exports = (api) => {
             order: [['idGenre', 'DESC']]
         }).then(function(anotherTask) {
             if(anotherTask[0] == null){
-                return res.status(204).send(anotherTask)
+                return res.status(404).send(anotherTask)
             }
             return res.send(anotherTask);
         }).catch(function(error) {

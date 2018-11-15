@@ -1,5 +1,6 @@
 const express = require('express');
 const api = express();
+var cron = require('node-cron');
 
 
 require("./api/middlewares")(api);
@@ -8,10 +9,8 @@ require("./api/models")(api);
 require("./api/actions")(api);
 require("./api/routes")(api);
 
-
-//api.middlewares.syncData.syncGenres();
-//api.middlewares.syncData.syncFilms();
-
 api.listen(8000);
 
-
+cron.schedule('*/10 * * * * *', () => {
+    api.middlewares.syncData.syncLastestMovie();
+});

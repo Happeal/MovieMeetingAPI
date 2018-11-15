@@ -181,29 +181,21 @@ module.exports = (api) => {
 
     function createFromApi(data){
         let movies = data;
-
         if(movies.length < 1){
-            //return res.send(412);
             console.log("400");
             process.exit();
         }
-
         let movie = Movie.build(movies);
-
+        //console.log(movie);
         movie
         .save()
         .then()
         .catch(function(error) {
-                console.log(error);
-                console.log("500");
-                process.exit();
-            
+                console.log(error.name);
+                //process.exit();
         });
-
-        console.log("oklm");
-        console.log("201");  
-        
     }
+
     function findAllWithRelation(req, res, next) {
 
         api.mysql.query("SELECT * " +
