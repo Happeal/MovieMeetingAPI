@@ -1,7 +1,9 @@
 const express = require('express');
 const api = express();
 var cron = require('node-cron');
+var cache = require('express-redis-cache')();
 
+api.cache = cache;
 
 require("./api/middlewares")(api);
 require("./api/settings")(api);

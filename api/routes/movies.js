@@ -16,6 +16,7 @@ module.exports = (api) => {
     */
     router.get('/',
         api.middlewares.tokenValidator,
+        api.cache.route(10), // le cache dure 10 sec
         api.actions.movies.findAll
     );
 
