@@ -223,24 +223,24 @@ module.exports = (api) => {
         movies.forEach(function(movie) {
             Movie.create(movie)
             .then((createdMovie) => { // save film's genres
-            let id = createdMovie.idDB;
-            let genres = data.genres;
-            console.log(id, ' has genres : ', genres);
-            genres.forEach(function(genre) {
-                MovieGenre.create({
-                    idMovie: id,
-                    idGenre: genre.id
-                })
-                .then(function(res) {
-                    console.log(res);
-                })
-                .catch(function(error) {
-                    console.log(error.name);
+                let id = createdMovie.idDB;
+                let genres = data.genres;
+                console.log(id, ' has genres : ', genres);
+                genres.forEach(function(genre) {
+                    MovieGenre.create({
+                        idMovie: id,
+                        idGenre: genre.id
+                    })
+                    .then(function(res) {
+                        console.log(res);
+                    })
+                    .catch(function(error) {
+                        console.log(error.name);
+                    });
                 });
-            });
-        })
+            })
             .catch(function(error) {
-                console.log(movie.title, ' ', error.name);
+                console.log(movie.title, ' : ', error.name);
             });
         });
     }
