@@ -210,11 +210,6 @@ module.exports = (api) => {
                 console.log(movie.title, ' ', error.name);
             });
         });
-        /*Movie.bulkCreate(data)
-        .then()
-        .catch(function(error) {
-            console.log(error.name);
-        });*/
     }
 
     function findAllWithRelation(req, res, next) {
