@@ -18,7 +18,8 @@ module.exports = (api) => {
         Genre: require('./Genre')(api),
         Meeting: require('./Meeting')(api),
         User: require('./User')(api),
-        UserMeeting: require('./UserMeeting')(api)
+        UserMeeting: require('./UserMeeting')(api),
+        MovieGenre: require('./MovieGenre')(api)
     };
 
     api.models.User.belongsToMany(api.models.Meeting, { through: api.models.UserMeeting, foreignKey: 'idUser' });

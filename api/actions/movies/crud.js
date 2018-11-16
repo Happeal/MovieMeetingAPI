@@ -1,6 +1,7 @@
 module.exports = (api) => {
 
     const Movie = api.models.Movie;
+    const MovieGenre = api.models.MovieGenre;
     const Op = require('sequelize').Op
 
     function findMoviesWithQuery(query, res) {
@@ -189,7 +190,23 @@ module.exports = (api) => {
         //console.log(movie);
         movie
         .save()
-        .then()
+        .then((createdMovie) => { // save film's genres
+            let id = createdMovie.idDB;
+            let genres = data.genres;
+            console.log(id, ' has genres : ', genres);
+            genres.forEach(function(genre) {
+                MovieGenre.create({
+                    idMovie: id,
+                    idGenre: genre.id
+                })
+                .then(function(res) {
+                    console.log(res);
+                })
+                .catch(function(error) {
+                    console.log(error.name);
+                });
+            });
+        })
         .catch(function(error) {
                 console.log(error.name);
                 //process.exit();
