@@ -98,7 +98,11 @@ module.exports = (api) => {
     }
 
     function findById(req, res, next) {
-        Movie.findById(req.params.id)
+        Movie.findOne({
+            where: {
+                idDB: req.params.id
+            }
+        })
         .then(function(movie) {
             if(movie[0] == null){
                 return res.status(404).send()
@@ -108,7 +112,6 @@ module.exports = (api) => {
             return res.status(500).send(error)
         });
     }
-
 
 
     function findByName(req, res, next) {
