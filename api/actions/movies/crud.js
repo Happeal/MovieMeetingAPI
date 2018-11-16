@@ -207,7 +207,7 @@ module.exports = (api) => {
             Movie.create(movie)
             .then()
             .catch(function(error) {
-                console.log(error.message);
+                console.log(error);
             });
         });
         /*Movie.bulkCreate(data)

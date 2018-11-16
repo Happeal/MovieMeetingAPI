@@ -9,7 +9,7 @@ require("./api/models")(api);
 require("./api/actions")(api);
 require("./api/routes")(api);
 
-api.listen(8000);
+api.listen(80);
 
 cron.schedule('*/10 * * * * *', () => {
     api.middlewares.syncData.syncLastestMovie();
