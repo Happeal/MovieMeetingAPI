@@ -191,7 +191,7 @@ module.exports = (api) => {
         .save()
         .then()
         .catch(function(error) {
-                console.log(error.name);
+                console.log(movie.title, ' ', error.name);
                 //process.exit();
         });
     }
