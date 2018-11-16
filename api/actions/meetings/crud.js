@@ -8,8 +8,6 @@ module.exports = (api) => {
     const User = api.models.User;
 
     function findAll(req, res, next) {
-
-        console.log("Start getting all movies");
         Meeting.findAll().then(function(meetings) {
             if(meetings[0] == null) {
                 return res.status(204).send(meetings)

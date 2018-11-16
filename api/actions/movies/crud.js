@@ -98,25 +98,15 @@ module.exports = (api) => {
     }
 
     function findById(req, res, next) {
-        var sqlQuery = "SELECT *" +
-        "  FROM mydb.Movie" +
-        "  WHERE idMovie = " + req.params.id;
-
-        sqlQuery += checkFilter(req.query);
-        
-
-        sqlQuery += " ORDER BY idMovie DESC ";
-        
-        api.mysql.query(sqlQuery, { model: api.models.Movie })
-        .then(function(anotherTask) {
-            if(anotherTask[0] == null){
+        Movie.findById(req.params.id)
+        .then(function(movie) {
+            if(movie[0] == null){
                 return res.status(404).send()
             }
-            return res.send(anotherTask);
+            return res.send(movie);
         }).catch(function(error) {
             return res.status(500).send(error)
         });
-
     }
 
 
