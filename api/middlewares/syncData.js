@@ -35,19 +35,21 @@ module.exports = (api) => {
     }
 
     function syncCurrentMovies(){
-        options.path = currentMoviesPath;
-        http.request(options, function(res){
-            var body = '';
+	for (let i = 1; i <= 10; i++) {
+        	options.path = currentMoviesPath + '&page=' + i;
+		console.log(options.path);
+        	http.request(options, function(res) {
+            		var body = '';
 
-            res.on('data', function(chunk){
-                body += chunk;
-            });
-            res.on('end', function(){
-                var data = JSON.parse(body);
-                api.actions.movies.createManyFromApi(data.results);
-                //console.log(data);
-            });
-        }).end();
+            		res.on('data', function(chunk){
+                		body += chunk;
+            		});
+            		res.on('end', function(){
+                		var data = JSON.parse(body);
+                		api.actions.movies.createManyFromApi(data.results);
+            		});
+        	}).end();
+	}
     }
 
     function syncUpcomingMovies(){

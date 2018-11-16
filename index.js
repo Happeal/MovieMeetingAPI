@@ -11,14 +11,14 @@ require("./api/routes")(api);
 
 api.listen(80);
 
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('*/1 * * * *', () => {
     api.middlewares.syncData.syncLastestMovie();
 });
 
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('*/10 * * * *', () => {
     api.middlewares.syncData.syncCurrentMovies();
 });
 
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('*/10 * * * *', () => {
     api.middlewares.syncData.syncUpcomingMovies();
 });
