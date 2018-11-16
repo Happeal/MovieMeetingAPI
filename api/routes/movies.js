@@ -37,6 +37,10 @@ module.exports = (api) => {
     */
     router.get('/playing',
         api.middlewares.tokenValidator,
+        api.cache.route({
+            type: 'text/plain',
+            expire: 10
+        }), // le cache dure 10 sec
         api.actions.movies.findPlaying
     );
 
@@ -54,6 +58,10 @@ module.exports = (api) => {
     */
     router.get('/with-latest-meetings',
         api.middlewares.tokenValidator,
+        api.cache.route({
+            type: 'text/plain',
+            expire: 10
+        }), // le cache dure 10 sec
         api.actions.movies.findMoviesWithRecentMeetings
     );
 
@@ -71,6 +79,10 @@ module.exports = (api) => {
     */
     router.get('/upcoming',
         api.middlewares.tokenValidator,
+        api.cache.route({
+            type: 'text/plain',
+            expire: 10
+        }), // le cache dure 10 sec
         api.actions.movies.findFuture
     );
 
@@ -87,6 +99,10 @@ module.exports = (api) => {
     */
     router.get('/:id',
         api.middlewares.tokenValidator,
+        api.cache.route({
+            type: 'text/plain',
+            expire: 10
+        }), // le cache dure 10 sec
         api.actions.movies.findById);
 
     /**
