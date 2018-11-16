@@ -104,7 +104,7 @@ module.exports = (api) => {
             }
         })
         .then(function(movie) {
-            if(movie[0] == null){
+            if(movie == null){
                 return res.status(404).send()
             }
             return res.send(movie);
