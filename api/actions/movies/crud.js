@@ -203,11 +203,18 @@ module.exports = (api) => {
             process.exit();
         }
         //console.log(data);
-        Movie.bulkCreate(data)
+        movies.forEach(function(movie) {
+            Movie.create(movie)
+            .then()
+            .catch(function(error) {
+                console.log(error.name);
+            });
+        });
+        /*Movie.bulkCreate(data)
         .then()
         .catch(function(error) {
             console.log(error.name);
-        });
+        });*/
     }
 
     function findAllWithRelation(req, res, next) {
